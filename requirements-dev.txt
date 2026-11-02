@@ -1,0 +1,6 @@
+# Herramientas de desarrollo: no son necesarias para ejecutar los modelos.
+# Se usan solo para ejecutar los notebooks y regenerar el PDF breve de la entrega.
+jupyter>=1.0
+nbformat>=5.10
+ipykernel>=6.29
+reportlab>=4.2
