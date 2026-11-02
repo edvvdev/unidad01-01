@@ -1,0 +1,21 @@
+age,workclass,education,education_num,marital_status,occupation,relationship,capital_gain,capital_loss,hours_per_week,real,predicho,categoria
+32,Private,Bachelors,13,Married-civ-spouse,Adm-clerical,Wife,0,0,24,>50K,<=50K,Falso negativo: perfil de ingresos altos poco representado en los datos
+53,Private,Bachelors,13,Never-married,Other-service,Not-in-family,0,0,21,>50K,<=50K,Falso negativo: perfil de ingresos altos poco representado en los datos
+47,Private,HS-grad,9,Married-civ-spouse,Priv-house-serv,Wife,0,0,35,>50K,<=50K,Falso negativo: perfil de ingresos altos poco representado en los datos
+31,State-gov,Masters,14,Married-civ-spouse,Prof-specialty,Husband,0,1740,40,<=50K,>50K,"Falso positivo: umbral de ingresos, sin ganancias de capital y jornada <= 40 h"
+74,Self-emp-not-inc,HS-grad,9,Married-civ-spouse,Sales,Husband,0,0,40,>50K,<=50K,Falso negativo: perfil de ingresos altos poco representado en los datos
+28,Private,Bachelors,13,Married-civ-spouse,Exec-managerial,Husband,0,0,55,<=50K,>50K,Falso positivo: perfil de ingresos bajo con señales de umbral ambiguas
+48,,HS-grad,9,Married-civ-spouse,,Husband,0,0,48,>50K,<=50K,Falso negativo: perfil de ingresos altos poco representado en los datos
+52,Private,HS-grad,9,Married-civ-spouse,Exec-managerial,Wife,0,0,45,<=50K,>50K,Falso positivo: perfil de ingresos bajo con señales de umbral ambiguas
+32,Self-emp-inc,Bachelors,13,Married-civ-spouse,Sales,Husband,0,0,40,<=50K,>50K,"Falso positivo: umbral de ingresos, sin ganancias de capital y jornada <= 40 h"
+33,Private,HS-grad,9,Married-civ-spouse,Sales,Husband,3103,0,40,>50K,<=50K,Falso negativo: ingresos altos con ganancias de capital no capturadas por el perfil
+48,Private,HS-grad,9,Married-civ-spouse,Exec-managerial,Husband,0,0,60,<=50K,>50K,Falso positivo: perfil de ingresos bajo con señales de umbral ambiguas
+27,Local-gov,Bachelors,13,Married-civ-spouse,Protective-serv,Husband,0,0,40,<=50K,>50K,"Falso positivo: umbral de ingresos, sin ganancias de capital y jornada <= 40 h"
+36,Private,Some-college,10,Married-civ-spouse,Machine-op-inspct,Husband,0,0,50,>50K,<=50K,Falso negativo: jornada alta que el modelo no asocia con ingreso alto
+48,Private,Some-college,10,Married-civ-spouse,Exec-managerial,Husband,0,0,45,<=50K,>50K,Falso positivo: perfil de ingresos bajo con señales de umbral ambiguas
+37,Federal-gov,HS-grad,9,Married-civ-spouse,Craft-repair,Husband,0,0,40,<=50K,>50K,"Falso positivo: umbral de ingresos, sin ganancias de capital y jornada <= 40 h"
+28,Private,HS-grad,9,Married-civ-spouse,Craft-repair,Husband,0,0,40,>50K,<=50K,Falso negativo: perfil de ingresos altos poco representado en los datos
+27,Local-gov,HS-grad,9,Married-civ-spouse,Protective-serv,Husband,0,0,40,>50K,<=50K,Falso negativo: perfil de ingresos altos poco representado en los datos
+55,Local-gov,Some-college,10,Divorced,Adm-clerical,Not-in-family,0,0,55,>50K,<=50K,Falso negativo: jornada alta que el modelo no asocia con ingreso alto
+31,Private,Some-college,10,Married-civ-spouse,Exec-managerial,Husband,0,0,65,>50K,<=50K,Falso negativo: jornada alta que el modelo no asocia con ingreso alto
+34,Private,Bachelors,13,Married-civ-spouse,Priv-house-serv,Wife,0,0,20,>50K,<=50K,Falso negativo: perfil de ingresos altos poco representado en los datos

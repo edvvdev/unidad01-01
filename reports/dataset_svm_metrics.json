@@ -1,0 +1,44 @@
+{
+  "dataset": "Adult (Census Income)",
+  "dataset_url": "https://archive.ics.uci.edu/static/public/2/adult.zip",
+  "licencia": "CC BY 4.0 (UCI)",
+  "filas_totales": 48842,
+  "filas_entrenamiento": 39073,
+  "filas_prueba": 9769,
+  "variables_utilizadas": [
+    "age",
+    "workclass",
+    "education",
+    "education_num",
+    "marital_status",
+    "occupation",
+    "relationship",
+    "capital_gain",
+    "capital_loss",
+    "hours_per_week"
+  ],
+  "columnas_excluidas": [
+    "fnlwgt",
+    "race",
+    "sex",
+    "native_country"
+  ],
+  "mejores_parametros": {
+    "model__C": "10.0",
+    "model__gamma": "0.1"
+  },
+  "f1_macro_submuestra_validacion": 0.7759409711368408,
+  "accuracy": 0.8588391851776026,
+  "f1_macro": 0.7927695595735267,
+  "recall_mas_50k": 0.6146278870829769,
+  "recall_menos_50k": 0.9356748755214641,
+  "verdaderos_positivos_mas_50k": 1437,
+  "falsos_negativos_mas_50k": 901,
+  "falsos_positivos_menos_50k": 478,
+  "verdaderos_negativos_menos_50k": 6953,
+  "baseline_accuracy": 0.7606715119254785,
+  "baseline_f1_macro": 0.43203488372093024,
+  "baseline_recall_mas_50k": 0.0,
+  "seed": 42,
+  "aprobacion_docente": "pendiente"
+}
