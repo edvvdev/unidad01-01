@@ -7,7 +7,22 @@ Proyecto de los laboratorios guiados 00–03 de la Unidad 01. Este README docume
 (entrega que integra LAB01 y LAB02). Los laboratorios 01 y 02 se resuelven en este mismo proyecto,
 porque LAB03 reutiliza el dataset, el target y las exclusiones del LAB02.
 
-## Instalación (Windows, PowerShell)
+## Instalación
+
+Dos caminos equivalentes: **uv** (recomendado, bloquea las versiones exactas en `uv.lock`) o el
+procedimiento del manual con `venv` + `requirements.txt` (se conserva porque el mandato exige que
+el repositorio incluya `requirements.txt`).
+
+**Con uv**
+
+```powershell
+cd C:\Proyectos\INF8239_U01
+uv python install 3.12
+uv sync
+uv run pytest -q                                    # 15 passed
+```
+
+**Con venv + requirements.txt (el procedimiento del manual)**
 
 ```powershell
 cd C:\Proyectos\INF8239_U01
@@ -15,20 +30,37 @@ python -m venv .venv
 .venv\Scripts\Activate.ps1
 python -m pip install --upgrade pip
 python -m pip install -r requirements.txt
+python -m pip install -r requirements-dev.txt      # jupyter y reportlab
 $env:PYTHONPATH="src"
-python -m pytest -q
+python -m pytest -q                                # 15 passed
 ```
 
-Resultado esperado: `15 passed`. Para ejecutar los notebooks se necesita además el kernel de Jupyter:
+En macOS/Linux: `python3 -m venv .venv` y `source .venv/bin/activate`.
+
+## Ejecución
+
+Un script hace todo el flujo: descarga el dataset, corre las pruebas, ejecuta los notebooks de
+principio a fin con sus salidas guardadas y regenera el PDF.
 
 ```powershell
-python -m pip install -r requirements-dev.txt
-python -m jupyter nbconvert --to notebook --execute --inplace notebooks/01_svm_guiada.ipynb
-python -m jupyter nbconvert --to notebook --execute --inplace notebooks/02_dataset_svm.ipynb
+.\scripts\run_all.ps1        # Windows
+```
+```bash
+./scripts/run_all.sh         # macOS / Linux
 ```
 
-El PDF breve de la entrega se regenera con `python scripts/build_ejercicio01_pdf.py` (requiere
-`reportlab`, incluido en `requirements-dev.txt`).
+Paso a paso:
+
+```bash
+uv run python -m pytest -q
+uv run python -m jupyter nbconvert --to notebook --execute --inplace notebooks/00_verificacion.ipynb
+uv run python -m jupyter nbconvert --to notebook --execute --inplace notebooks/01_svm_guiada.ipynb
+uv run python -m jupyter nbconvert --to notebook --execute --inplace notebooks/02_dataset_svm.ipynb
+uv run python scripts/build_ejercicio01_pdf.py
+```
+
+Tiempos orientativos en CPU: LAB01 ~30 s y LAB02 ~7 min (el SVM ajusta 39.073 filas). Las
+**métricas se reproducen exactamente**; los tiempos varían con el hardware.
 
 ## Descarga reproducible de los datos
 
