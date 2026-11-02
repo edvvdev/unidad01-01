@@ -18,7 +18,7 @@ from reportlab.platypus import Image, PageBreak, Paragraph, SimpleDocTemplate, S
 #: de entorno REPO_URL al regenerar el PDF).
 REPO_URL = os.getenv("REPO_URL", "")
 
-ROOT = Path("/home/trek/source/uasd/cienciadedatos/tareas/Unidad_1/INF8239_U01")
+ROOT = Path(__file__).resolve().parents[1]   # raíz del proyecto, válida en cualquier clon
 REPORTS = ROOT / "reports"
 
 svm = json.loads((REPORTS / "svm_metrics.json").read_text(encoding="utf-8"))
