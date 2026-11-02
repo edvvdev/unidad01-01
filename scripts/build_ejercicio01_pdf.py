@@ -3,6 +3,8 @@
 from __future__ import annotations
 
 import json
+import os
+import re
 from pathlib import Path
 
 from reportlab.lib import colors
@@ -12,6 +14,10 @@ from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet
 from reportlab.lib.units import cm
 from reportlab.platypus import Image, PageBreak, Paragraph, SimpleDocTemplate, Spacer, Table, TableStyle
 
+#: URL del repositorio donde se publica esta entrega (se puede sobrescribir con la variable
+#: de entorno REPO_URL al regenerar el PDF).
+REPO_URL = os.getenv("REPO_URL", "")
+
 ROOT = Path("/home/trek/source/uasd/cienciadedatos/tareas/Unidad_1/INF8239_U01")
 REPORTS = ROOT / "reports"
 
@@ -20,6 +26,11 @@ adult = json.loads((REPORTS / "dataset_svm_metrics.json").read_text(encoding="ut
 conclusion = (ROOT / "docs/CONCLUSION_EJERCICIO_01.md").read_text(encoding="utf-8")
 conclusion_body = conclusion.split("**Qué se construyó.**", 1)[1]
 conclusion_body = "**Qué se construyó.**" + conclusion_body.split("**Pendiente crítico:**", 1)[0]
+
+
+def negritas(texto: str) -> str:
+    """Convierte **negrita** de Markdown en <b>...</b> para reportlab."""
+    return re.sub(r"\*\*(.+?)\*\*", r"<b>\1</b>", texto)
 
 styles = getSampleStyleSheet()
 styles.add(ParagraphStyle(name="Title2", parent=styles["Title"], fontSize=17, spaceAfter=6))
@@ -39,7 +50,7 @@ identificacion = [
     ["Estudiante", "PENDIENTE: nombre completo y matrícula"],
     ["Correo institucional", "PENDIENTE: ID+USUARIO@users.noreply.github.com"],
     ["Profesor", "Edwin Ramón José Nolasco"],
-    ["Repositorio", "PENDIENTE: enlace de GitHub (publicar antes de entregar)"],
+    ["Repositorio", REPO_URL or "PENDIENTE: enlace de GitHub (publicar antes de entregar)"],
     ["Fecha de ejecución", "2026-11-02"],
 ]
 table = Table(identificacion, colWidths=[4.2 * cm, 11.6 * cm])

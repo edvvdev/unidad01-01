@@ -1,6 +1,7 @@
 # INF-8239 · Unidad 01 · Ejercicio 01 (LAB01 + LAB02)
 
 Curso: Ciencia de Datos II (INF-8239) · Profesor: Edwin Ramón José Nolasco
+Repositorio de esta entrega: https://github.com/edvvdev/unidad01-01
 
 Proyecto de los laboratorios guiados 00–03 de la Unidad 01. Este README documenta el **Ejercicio 01**
 (entrega que integra LAB01 y LAB02). Los laboratorios 01 y 02 se resuelven en este mismo proyecto,
