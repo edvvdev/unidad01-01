@@ -21,10 +21,13 @@ python -m pytest -q
 Resultado esperado: `15 passed`. Para ejecutar los notebooks se necesita además el kernel de Jupyter:
 
 ```powershell
-python -m pip install jupyter
+python -m pip install -r requirements-dev.txt
 python -m jupyter nbconvert --to notebook --execute --inplace notebooks/01_svm_guiada.ipynb
 python -m jupyter nbconvert --to notebook --execute --inplace notebooks/02_dataset_svm.ipynb
 ```
+
+El PDF breve de la entrega se regenera con `python scripts/build_ejercicio01_pdf.py` (requiere
+`reportlab`, incluido en `requirements-dev.txt`).
 
 ## Descarga reproducible de los datos
 
