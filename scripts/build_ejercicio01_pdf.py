@@ -47,9 +47,8 @@ story.append(Paragraph(
 story.append(Spacer(1, 6))
 
 identificacion = [
-    ["Estudiante", "PENDIENTE: nombre completo y matrícula"],
-    ["Correo institucional", "PENDIENTE: ID+USUARIO@users.noreply.github.com"],
-    ["Profesor", "Edwin Ramón José Nolasco"],
+        ["Estudiante", "Edwing Perez · matrícula: PENDIENTE"],
+        ["Profesor", "Edwin Ramón José Nolasco"],
     ["Repositorio", REPO_URL or "PENDIENTE: enlace de GitHub (publicar antes de entregar)"],
     ["Fecha de ejecución", "2026-11-02"],
 ]
