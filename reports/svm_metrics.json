@@ -1,0 +1,22 @@
+{
+  "baseline_accuracy": 0.631578947368421,
+  "baseline_f1_macro": 0.3870967741935484,
+  "baseline_recall_maligno": 0.0,
+  "accuracy": 0.9824561403508771,
+  "f1_macro": 0.9811507936507937,
+  "recall_maligno": 0.9761904761904762,
+  "recall_benigno": 0.9861111111111112,
+  "especificidad": 0.9861111111111112,
+  "verdaderos_positivos_maligno": 41,
+  "falsos_negativos_maligno": 1,
+  "falsos_positivos_benigno": 1,
+  "verdaderos_negativos_benigno": 71,
+  "mejores_parametros": {
+    "model__C": "10.0",
+    "model__gamma": "0.01"
+  },
+  "f1_macro_validacion": 0.9738878509919948,
+  "seed": 42,
+  "filas_entrenamiento": 455,
+  "filas_prueba": 114
+}

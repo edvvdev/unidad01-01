@@ -1,0 +1,73 @@
+"""Modelos reutilizables del laboratorio (LAB01 y LAB02)."""
+
+from __future__ import annotations
+
+import pandas as pd
+from sklearn.compose import ColumnTransformer
+from sklearn.dummy import DummyClassifier
+from sklearn.impute import SimpleImputer
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import OneHotEncoder, StandardScaler
+from sklearn.svm import SVC
+
+
+def build_svm(C: float = 1.0, gamma: str | float = "scale") -> Pipeline:
+    """Pipeline de SVM con estandarización dentro (evita fuga de información).
+
+    Raises:
+        ValueError: si C no es un valor positivo.
+    """
+    if C is None or float(C) <= 0:
+        raise ValueError("C debe ser un valor mayor que cero")
+    return Pipeline(
+        steps=[
+            ("scaler", StandardScaler()),
+            ("model", SVC(C=float(C), gamma=gamma, kernel="rbf")),
+        ]
+    )
+
+
+def build_baseline() -> DummyClassifier:
+    """Baseline mínimo: predecir siempre la clase mayoritaria."""
+    return DummyClassifier(strategy="most_frequent")
+
+
+def identify_column_types(frame: pd.DataFrame, target_column: str | None = None) -> tuple[list[str], list[str]]:
+    """Separa variables numéricas y categóricas; el target nunca entra como variable de entrada."""
+    features = frame.drop(columns=[target_column]) if target_column and target_column in frame.columns else frame
+    numeric = [column for column in features.columns if pd.api.types.is_numeric_dtype(features[column])]
+    categorical = [column for column in features.columns if column not in numeric]
+    return numeric, categorical
+
+
+def build_preprocessor(frame: pd.DataFrame, target_column: str | None = None) -> ColumnTransformer:
+    """ColumnTransformer: imputación + escala para numéricas, imputación + one-hot para categóricas."""
+    numeric, categorical = identify_column_types(frame, target_column)
+    transformers = []
+    if numeric:
+        transformers.append(
+            ("numeric", Pipeline(steps=[("imputer", SimpleImputer(strategy="median")), ("scaler", StandardScaler())]), numeric)
+        )
+    if categorical:
+        transformers.append(
+            (
+                "categorical",
+                Pipeline(steps=[("imputer", SimpleImputer(strategy="most_frequent")), ("encoder", OneHotEncoder(handle_unknown="ignore"))]),
+                categorical,
+            )
+        )
+    return ColumnTransformer(transformers=transformers)
+
+
+def build_svm_pipeline(frame: pd.DataFrame, target_column: str | None = None, C: float = 1.0, gamma: str | float = "scale") -> Pipeline:
+    """Pipeline completo con ColumnTransformer y SVM (LAB02).
+
+    `frame` debe ser el conjunto de variables de entrada (sin el target). Si se indica
+    `target_column` y esa columna está en `frame`, se excluye de las variables de entrada.
+    """
+    return Pipeline(
+        steps=[
+            ("preprocessor", build_preprocessor(frame, target_column)),
+            ("model", SVC(C=float(C), gamma=gamma, kernel="rbf", cache_size=2000)),
+        ]
+    )
