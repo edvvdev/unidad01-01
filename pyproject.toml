@@ -7,7 +7,10 @@ requires-python = ">=3.12,<3.13"
 dependencies = [
     "numpy>=1.26",
     "pandas>=2.2",
-    "scikit-learn>=1.4",
+    # El manual de la Unidad 01 (LAB01 §7-§8) construye el SVM con `probability=True` para
+    # el ROC-AUC; ese parámetro está obsoleto desde scikit-learn 1.9 y se elimina en 1.11,
+    # así que se acota la versión para que el código del manual siga funcionando.
+    "scikit-learn>=1.4,<1.11",
     "matplotlib>=3.8",
     "seaborn>=0.13",
     "joblib>=1.3",
@@ -16,6 +19,7 @@ dependencies = [
 [dependency-groups]
 dev = [
     "pytest>=8.0",
+    "ruff>=0.6",
     "jupyter>=1.0",
     "nbformat>=5.10",
     "ipykernel>=6.29",
@@ -33,3 +37,15 @@ packages = ["src/inf8239_u01"]
 pythonpath = ["src", "."]
 testpaths = ["tests"]
 addopts = "-ra"
+
+[tool.ruff]
+line-length = 120
+target-version = "py312"
+extend-include = ["*.ipynb"]
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F", "I"]
+
+[tool.ruff.lint.per-file-ignores]
+# En los notebooks el `sys.path.insert` precede a los imports del paquete: es intencional.
+"notebooks/*.ipynb" = ["E402"]

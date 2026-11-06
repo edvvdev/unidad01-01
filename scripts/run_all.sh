@@ -11,15 +11,15 @@ ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT"
 
 if command -v uv >/dev/null 2>&1; then
-  echo "==> Entorno: uv (uv sync)"
-  uv sync
+  echo "==> Entorno: uv (uv sync --frozen)"
+  uv sync --frozen
   RUN=(uv run)
   export REPO_URL="${REPO_URL:-https://github.com/edvvdev/unidad01-01}"
 else
   PY=".venv/bin/python"
   if [ ! -x "$PY" ]; then
     echo "No hay uv ni entorno .venv. Elige una de estas dos opciones:" >&2
-    echo "  a) uv sync                      (recomendado)" >&2
+    echo "  a) uv sync --frozen              (recomendado)" >&2
     echo "  b) python3 -m venv .venv && .venv/bin/pip install -r requirements.txt -r requirements-dev.txt" >&2
     exit 1
   fi
@@ -29,17 +29,20 @@ else
   export REPO_URL="${REPO_URL:-https://github.com/edvvdev/unidad01-01}"
 fi
 
-echo "==> 1/5. Dataset (se descarga una vez; el notebook también lo hace solo)"
+echo "==> 1/6. Dataset (se descarga una vez; el notebook también lo hace solo)"
 "${RUN[@]}" - <<'CODE'
 from inf8239_u01.data import download_dataset
 print("adult:", download_dataset("adult", "data/raw"))
 print("bank (candidato alterno):", download_dataset("bank", "data/raw"))
 CODE
 
-echo "==> 2/5. Pruebas (esperado: 15 passed)"
+echo "==> 2/6. Auditoría de los datasets (reports/audit_summary.json)"
+"${RUN[@]}" python scripts/audit_datasets.py
+
+echo "==> 3/6. Pruebas (esperado: 40 passed)"
 "${RUN[@]}" -m pytest -q
 
-echo "==> 3/5. Notebooks"
+echo "==> 4/6. Notebooks"
 "${RUN[@]}" -m jupyter nbconvert --to notebook --execute --inplace \
   --ExecutePreprocessor.timeout=3600 notebooks/00_verificacion.ipynb
 "${RUN[@]}" -m jupyter nbconvert --to notebook --execute --inplace \
@@ -47,10 +50,10 @@ echo "==> 3/5. Notebooks"
 "${RUN[@]}" -m jupyter nbconvert --to notebook --execute --inplace \
   --ExecutePreprocessor.timeout=3600 notebooks/02_dataset_svm.ipynb
 
-echo "==> 4/5. PDF breve de entrega"
+echo "==> 5/6. PDF breve de entrega"
 "${RUN[@]}" python scripts/build_ejercicio01_pdf.py
 
-echo "==> 5/5. Resumen de cifras generadas"
+echo "==> 6/6. Resumen de cifras generadas"
 "${RUN[@]}" - <<'CODE'
 import json
 from pathlib import Path
@@ -58,9 +61,11 @@ from pathlib import Path
 reports = Path("reports")
 svm = json.loads((reports / "svm_metrics.json").read_text())
 adult = json.loads((reports / "dataset_svm_metrics.json").read_text())
-print(f"LAB01  accuracy={svm['accuracy']:.4f}  f1_macro={svm['f1_macro']:.4f}  recall_maligno={svm['recall_maligno']:.4f}")
-print(f"LAB02  accuracy={adult['accuracy']:.4f}  f1_macro={adult['f1_macro']:.4f}  recall_mas_50k={adult['recall_mas_50k']:.4f}")
+print(f"LAB01  accuracy={svm['accuracy']:.4f}  f1_macro={svm['f1_macro']:.4f}  recall_maligno={svm['recall_maligno']:.4f}  roc_auc={svm['roc_auc']:.4f}")
+print(f"LAB02  accuracy={adult['accuracy']:.4f}  f1_macro={adult['f1_macro']:.4f}  recall_mas_50k={adult['recall_mas_50k']:.4f}  roc_auc={adult['roc_auc_mas_50k']:.4f}")
 print("Revisa que estas cifras coincidan con README, ficha, conclusión y PDF.")
 CODE
 
-echo "Listo. Revisa 'git status' y publica cuando hayas completado los campos PENDIENTE de los PDF."
+echo "Listo. Revisa 'git status', comprueba que el PDF no tenga marcadores pendientes y"
+echo "publica la entrega con la etiqueta u01-ejercicio01 (la aprobación del docente sobre"
+echo "el dataset del LAB02 sigue pendiente y así queda declarado en la entrega)."
