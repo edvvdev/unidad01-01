@@ -1,6 +1,6 @@
 # Ficha del dataset · LAB02 (Unidad 01)
 
-Proyecto: `INF8239_U01` · Curso: INF-8239 Ciencia de Datos II · Fecha: 2026-11-02
+Proyecto: `INF8239_U01` · Curso: INF-8239 Ciencia de Datos II · Fecha: 2026-11-05
 Estado: **comparación de candidatos completada; el entrenamiento final queda pendiente de la
 aprobación del docente** (regla del manual: no continuar con el entrenamiento final sin aprobación).
 
@@ -31,13 +31,13 @@ descarga automatizada. Ninguno contiene identificadores personales directos.
 
 | Aspecto | Detalle verificado |
 |---|---|
-| Procedencia | UCI Machine Learning Repository, *Adult* (Census Income), http://archive.ics.uci.edu/dataset/2/adult |
+| Procedencia | UCI Machine Learning Repository, *Adult* (Census Income), http://archive.ics.uci.edu/dataset/2/adult · DOI **10.24432/C5XW20** |
 | Descarga | `https://archive.ics.uci.edu/static/public/2/adult.zip` (script `download_dataset("adult")`) |
 | Licencia | **CC BY 4.0** — uso académico permitido con cita |
 | Filas / columnas | **48.842 filas × 15 columnas** (`adult.data` + `adult.test`) |
 | Periodo | Censo de 1994 (archivo de entrenamiento) y muestra de 1996 (archivo de prueba) |
 | Target y clases | `income`: `<=50K` 37.155 (76,07 %) · `>50K` 11.687 (23,93 %) |
-| Tipos | 7 numéricas + 7 categóricas + target → exige imputación y one-hot encoding |
+| Tipos | 6 numéricas + 8 categóricas + target → exige imputación y one-hot encoding (verificado con `dtypes` en `reports/audit_summary.json`) |
 | Ausentes | 6.465 celdas: `workclass` 2.799 · `occupation` 2.809 · `native_country` 857 (marcados `?`) |
 | Duplicados | 52 filas idénticas (0,11 %) |
 | Exclusiones semánticas | `fnlwgt` (peso de muestreo del censo, no atributo de la persona), `race`, `sex` y `native_country` (atributos sensibles innecesarios para estimar el ingreso) → quedan 10 variables: 5 numéricas y 5 categóricas |
@@ -48,7 +48,7 @@ descarga automatizada. Ninguno contiene identificadores personales directos.
 
 | Aspecto | Detalle verificado |
 |---|---|
-| Procedencia | UCI Machine Learning Repository, *Bank Marketing*, https://archive.ics.uci.edu/dataset/222/bank-marketing |
+| Procedencia | UCI Machine Learning Repository, *Bank Marketing*, https://archive.ics.uci.edu/dataset/222/bank-marketing · DOI **10.24432/C5K306** |
 | Descarga | `https://archive.ics.uci.edu/static/public/222/bank+marketing.zip` (ZIP anidados; script `download_dataset("bank")`) |
 | Licencia | **CC BY 4.0** — uso académico permitido con cita |
 | Filas / columnas | **45.211 filas × 17 columnas** (`bank-full.csv`) |
@@ -64,7 +64,7 @@ descarga automatizada. Ninguno contiene identificadores personales directos.
 
 | Criterio | A · Adult | B · Bank Marketing |
 |---|---|---|
-| Procedencia verificable | UCI, ficha con DOI y licencia | UCI, ficha con DOI y licencia |
+| Procedencia verificable | UCI, ficha con DOI **10.24432/C5XW20** y licencia CC BY 4.0 | UCI, ficha con DOI **10.24432/C5K306** y licencia CC BY 4.0 |
 | Licencia | CC BY 4.0 | CC BY 4.0 |
 | Filas / columnas | 48.842 × 15 | 45.211 × 17 |
 | Target y clases | `income`, 2 clases (76,07 % / 23,93 %) | `y`, 2 clases (88,30 % / 11,70 %) |
@@ -97,8 +97,12 @@ macro y aporta tipos mixtos con nulos, que es exactamente lo que el laboratorio 
 (`duration`) documenta el riesgo de fuga de forma muy didáctica.
 
 > **Pendiente:** este dataset **no** puede usarse para el entrenamiento final hasta que el docente
-> apruebe la comparación anterior (regla del manual de la Unidad 01). Estado de aprobación:
-> **pendiente del docente** — fecha: ______ — correo enviado: ______.
+> apruebe la comparación anterior (regla del manual de la Unidad 01).
+>
+> **Estado de aprobación: pendiente.** La ficha debe enviarse al docente **antes de la entrega** y la
+> respuesta debe quedar registrada aquí (fecha de envío y fecha de respuesta). Mientras tanto, el
+> entrenamiento de este repositorio se ejecutó con la aprobación pendiente, y así queda declarado en
+> `reports/dataset_svm_metrics.json` (`aprobacion_docente: pendiente`) y en la portada del PDF de entrega.
 
 ## Diccionario de datos (candidato A, con exclusiones aplicadas)
 
@@ -150,3 +154,17 @@ ninguna categoría ni se eliminaron filas: las 48.842 se conservan y los nulos l
   cualquier decisión sobre personas; publicar predicciones individuales; usar los atributos
   sensibles (`race`, `sex`, `native_country`) que se excluyeron deliberadamente; y afirmar
   causalidad (el dataset es observacional, sin experimental).
+
+## Referencias
+
+- Becker, B. y Kohavi, R. (1996). *Adult* (Census Income). UCI Machine Learning Repository.
+  DOI [10.24432/C5XW20](https://doi.org/10.24432/C5XW20). Ficha: <https://archive.ics.uci.edu/dataset/2/adult>.
+  Licencia CC BY 4.0.
+- Moro, S., Rita, P. y Cortez, P. (2014). A data-driven approach to predict the success of bank
+  telemarketing. *Decision Support Systems*. DOI [10.1016/j.dss.2014.03.001](https://doi.org/10.1016/j.dss.2014.03.001).
+  Ficha del dataset: <https://archive.ics.uci.edu/dataset/222/bank-marketing> (DOI 10.24432/C5K306).
+  Licencia CC BY 4.0.
+- Pedregosa, F. et al. (2011). Scikit-learn: Machine Learning in Python. *JMLR*, 12, 2825–2830.
+  <https://www.jmlr.org/papers/v12/pedregosa11a.html>.
+- Harper, E. W. y Konstan, J. A. (2012). *The Elements of Statistical Learning* (2.ª ed.). Springer.
+  DOI [10.1007/978-0-387-84858-7](https://doi.org/10.1007/978-0-387-84858-7).
