@@ -39,6 +39,10 @@
   "baseline_accuracy": 0.7606715119254785,
   "baseline_f1_macro": 0.43203488372093024,
   "baseline_recall_mas_50k": 0.0,
+  "roc_auc_mas_50k": 0.8839975047310076,
+  "baseline_roc_auc": 0.5,
+  "roc_auc_clase_positiva": ">50K",
+  "fecha_ejecucion": "2026-11-05",
   "seed": 42,
   "aprobacion_docente": "pendiente"
 }

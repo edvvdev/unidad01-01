@@ -49,6 +49,51 @@ def cv_table(cv_results: dict) -> pd.DataFrame:
     return table
 
 
+def _describe_errors(subset: pd.DataFrame) -> dict:
+    """Describe un conjunto de errores: tamaño y desglose de las variables relevantes."""
+    description = {
+        "n": int(len(subset)),
+        "education": {str(key): int(value) for key, value in subset["education"].value_counts().items()},
+        "capital_gain_cero": int((subset["capital_gain"] == 0).sum()),
+        "capital_gain_positivo": int((subset["capital_gain"] > 0).sum()),
+        "capital_gain_positivo_filas": [
+            {
+                "age": int(row["age"]),
+                "education": str(row["education"]),
+                "capital_gain": int(row["capital_gain"]),
+            }
+            for _, row in subset[subset["capital_gain"] > 0].iterrows()
+        ],
+        "edad_media": float(subset["age"].mean()) if len(subset) else 0.0,
+        "edad_mediana": float(subset["age"].median()) if len(subset) else 0.0,
+        "horas_media": float(subset["hours_per_week"].mean()) if len(subset) else 0.0,
+        "horas_mediana": float(subset["hours_per_week"].median()) if len(subset) else 0.0,
+    }
+    return description
+
+
+def error_profile(
+    errors: pd.DataFrame,
+    real_column: str = "real",
+    pred_column: str = "predicho",
+    positive_label: str = ">50K",
+    negative_label: str = "<=50K",
+) -> dict:
+    """Perfil real de los errores: falso negativo y falso positivo, con su desglose.
+
+    Se calcula **desde los datos** (nunca a mano): número de casos de cada tipo de
+    error, nivel educativo, presencia de `capital_gain`, edad y jornada.
+    """
+    falsos_negativos = errors[(errors[real_column] == positive_label) & (errors[pred_column] == negative_label)]
+    falsos_positivos = errors[(errors[real_column] == negative_label) & (errors[pred_column] == positive_label)]
+    return {
+        "n_falso_negativo": int(len(falsos_negativos)),
+        "n_falso_positivo": int(len(falsos_positivos)),
+        "falso_negativo": _describe_errors(falsos_negativos),
+        "falso_positivo": _describe_errors(falsos_positivos),
+    }
+
+
 def report_frame(y_true, y_pred, target_names: list[str] | None = None) -> pd.DataFrame:
     """Reporte por clase en DataFrame (soporta sklearn >= 1.4 con target_names)."""
     report = classification_report(y_true, y_pred, output_dict=True, zero_division=0)

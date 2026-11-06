@@ -16,6 +16,14 @@
     "model__gamma": "0.01"
   },
   "f1_macro_validacion": 0.9738878509919948,
+  "roc_auc": 0.9976851851851851,
+  "roc_auc_clase_positiva": 0.9976851851851851,
+  "roc_auc_maligno": 0.9976851851851852,
+  "clase_positiva": "benigno (target = 1)",
+  "clase_costosa": "maligno (target = 0)",
+  "roc_auc_configuracion_base": 0.9950396825396826,
+  "baseline_roc_auc": 0.5,
+  "fecha_ejecucion": "2026-11-05",
   "seed": 42,
   "filas_entrenamiento": 455,
   "filas_prueba": 114
