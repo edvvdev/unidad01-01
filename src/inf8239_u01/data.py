@@ -6,11 +6,16 @@ import hashlib
 import io
 import zipfile
 from pathlib import Path
+from urllib.error import HTTPError, URLError
 from urllib.parse import urlparse
+from urllib.request import Request, urlopen
 
 import pandas as pd
 
 ALLOWED_SCHEMES = {"http", "https"}
+
+#: Identificador enviado en la petición HTTP para que el servidor identifique la descarga.
+USER_AGENT = "inf8239-u01/1.0 (INF-8239 Ciencia de Datos II, UASD)"
 
 
 def load_breast_cancer() -> tuple[pd.DataFrame, pd.Series]:
@@ -75,30 +80,90 @@ def validate_url(url: str) -> str:
     return url
 
 
+def sha256_bytes(data: bytes) -> str:
+    """SHA-256 de un bloque de bytes en hexadecimal."""
+    return hashlib.sha256(data).hexdigest()
+
+
+def sha256_file(path: str | Path) -> str:
+    """SHA-256 de un archivo en disco, leído por bloques."""
+    digest = hashlib.sha256()
+    with Path(path).open("rb") as handle:
+        for block in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(block)
+    return digest.hexdigest()
+
+
+#: Raíz del proyecto (padre de `src/`), usada para escribir rutas verificables.
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
+
+
+def _sidecar_path(path: Path) -> str:
+    """Ruta del archivo tal como puede verificarla `sha256sum -c` desde la raíz.
+
+    Si el archivo está dentro del proyecto se guarda la ruta relativa a la raíz
+    (`data/raw/adult.csv`); si está fuera, se guarda la ruta absoluta. En ambos casos
+    `sha256sum -c` encuentra el archivo desde el directorio de trabajo.
+    """
+    resolved = path.resolve()
+    try:
+        return resolved.relative_to(PROJECT_ROOT).as_posix()
+    except ValueError:
+        return resolved.as_posix()
+
+
+def write_sha256_sidecar(path: str | Path, digest: str | None = None) -> Path:
+    """Escribe `<archivo>.sha256` con el SHA-256 de **ese** archivo.
+
+    El sidecar usa el formato de `sha256sum -c` (`<hash>  <ruta>`) y guarda la ruta
+    relativa al directorio de trabajo, de modo que `sha256sum -c data/raw/*.sha256`
+    verifica cada archivo desde la raíz del proyecto.
+    """
+    target = Path(path)
+    if digest is None:
+        digest = sha256_file(target)
+    sidecar = target.with_name(target.name + ".sha256")
+    sidecar.write_text(f"{digest}  {_sidecar_path(target)}\n", encoding="utf-8")
+    return sidecar
+
+
+def _download_bytes(url: str, timeout: int) -> bytes:
+    """Descarga el contenido de una URL http(s) usando solo la biblioteca estándar.
+
+    Se usa `urllib.request` y no `requests` para que el proyecto funcione con
+    `uv sync --frozen` sin depender de ningún paquete no declarado.
+    """
+    validate_url(url)
+    request = Request(url, headers={"User-Agent": USER_AGENT})
+    try:
+        with urlopen(request, timeout=timeout) as response:
+            return response.read()
+    except HTTPError as error:
+        raise RuntimeError(f"La descarga devolvió el estado {error.code}: {url}") from error
+    except URLError as error:
+        raise RuntimeError(f"No se pudo descargar {url}: {error.reason}") from error
+
+
 def download_csv(url: str, destination: str | Path, filename: str | None = None) -> Path:
     """Descarga un CSV y lo guarda en disco devolviendo su ruta.
 
     Valida la URL, comprueba que el archivo descargado sea legible, no vacío y
-    contenga al menos una columna y una fila.
+    contenga al menos una columna y una fila. Deja además el sidecar `.sha256`
+    con el hash **de ese archivo**.
     """
-    import requests
-
-    validate_url(url)
+    content = _download_bytes(url, timeout=120)
     destination = Path(destination)
     destination.mkdir(parents=True, exist_ok=True)
-    response = requests.get(url, timeout=120)
-    response.raise_for_status()
-    digest = hashlib.sha256(response.content).hexdigest()
     if filename is None:
         filename = Path(urlparse(url).path).name or "dataset.csv"
     target = destination / filename
-    target.write_bytes(response.content)
+    target.write_bytes(content)
     if target.stat().st_size == 0:
         raise ValueError(f"El archivo descargado está vacío: {target}")
     frame = pd.read_csv(target)
     if frame.empty or frame.shape[1] == 0:
         raise ValueError(f"El archivo descargado no contiene datos utilizables: {target}")
-    (destination / f"{target.name}.sha256").write_text(f"{digest}  {target.name}\n", encoding="utf-8")
+    write_sha256_sidecar(target)
     return target
 
 
@@ -132,6 +197,7 @@ DATASET_SPECS: dict[str, dict] = {
         "nombre": "Adult (Census Income)",
         "url": "https://archive.ics.uci.edu/static/public/2/adult.zip",
         "ficha": "https://archive.ics.uci.edu/dataset/2/adult",
+        "doi": "10.24432/C5XW20",
         "licencia": "CC BY 4.0 (UCI)",
         "target": "income",
         "target_positive": ">50K",
@@ -146,6 +212,7 @@ DATASET_SPECS: dict[str, dict] = {
         "nombre": "Bank Marketing",
         "url": "https://archive.ics.uci.edu/static/public/222/bank+marketing.zip",
         "ficha": "https://archive.ics.uci.edu/dataset/222/bank-marketing",
+        "doi": "10.24432/C5K306",
         "licencia": "CC BY 4.0 (UCI)",
         "target": "y",
         "target_positive": "yes",
@@ -188,28 +255,37 @@ def _read_bank(archive) -> pd.DataFrame:
 def download_dataset(name: str, destination: str | Path = "data/raw") -> Path:
     """Descarga un dataset candidato y deja un único CSV limpio en `destination`.
 
-    Guarda además el SHA-256 de los bytes descargados para poder verificar la procedencia.
+    Guarda además el ZIP original y **un sidecar `.sha256` por archivo** (el del ZIP y el
+    del CSV), cada uno con el hash de ese archivo, de forma que
+    `sha256sum -c data/raw/*.sha256` verifica los dos desde la raíz del proyecto.
     """
-    import requests
-
     if name not in DATASET_SPECS:
         raise ValueError(f"Dataset desconocido: {name}. Opciones: {sorted(DATASET_SPECS)}")
     spec = DATASET_SPECS[name]
     url = validate_url(spec["url"])
     destination = Path(destination)
     destination.mkdir(parents=True, exist_ok=True)
-    response = requests.get(url, timeout=180)
-    response.raise_for_status()
-    digest = hashlib.sha256(response.content).hexdigest()
-    archive = zipfile.ZipFile(io.BytesIO(response.content))
+
+    content = _download_bytes(url, timeout=180)
+    archive_path = destination / f"{name}.zip"
+    archive_path.write_bytes(content)
+    write_sha256_sidecar(archive_path, sha256_bytes(content))
+
+    archive = zipfile.ZipFile(io.BytesIO(content))
     frame = _read_adult(archive) if name == "adult" else _read_bank(archive)
     frame = frame.apply(lambda column: column.str.strip() if column.dtype == object else column)
-    target = Path(destination) / f"{name}.csv"
+
+    target = destination / f"{name}.csv"
     frame.to_csv(target, index=False)
-    (destination / f"{target.name}.sha256").write_text(f"{digest}  {target.name}\n", encoding="utf-8")
+    write_sha256_sidecar(target)
+
+    nombre_original = Path(urlparse(url).path).name
     (destination / f"{target.name}.source.txt").write_text(
         f"dataset: {spec['nombre']}\nurl: {spec['url']}\nficha: {spec['ficha']}\n"
-        f"licencia: {spec['licencia']}\nsha256 del archivo descargado: {digest}\n",
+        f"doi: {spec['doi']}\nlicencia: {spec['licencia']}\n"
+        f"archivo original: {nombre_original}\n"
+        f"zip local: {archive_path.name}\nsha256 del zip: {sha256_bytes(content)}\n"
+        f"csv local: {target.name}\nsha256 del csv: {sha256_file(target)}\n",
         encoding="utf-8",
     )
     return target
