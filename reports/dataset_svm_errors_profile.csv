@@ -1,0 +1,43 @@
+ambito,tipo_error,variable,valor,conteo,porcentaje
+muestra_20,falso_negativo,education,HS-grad,6,50.0
+muestra_20,falso_negativo,education,Bachelors,3,25.0
+muestra_20,falso_negativo,education,Some-college,3,25.0
+muestra_20,falso_negativo,capital_gain,= 0,11,91.67
+muestra_20,falso_negativo,capital_gain,> 0,1,8.33
+muestra_20,falso_positivo,education,Bachelors,3,37.5
+muestra_20,falso_positivo,education,HS-grad,3,37.5
+muestra_20,falso_positivo,education,Masters,1,12.5
+muestra_20,falso_positivo,education,Some-college,1,12.5
+muestra_20,falso_positivo,capital_gain,= 0,8,100.0
+muestra_20,falso_positivo,capital_gain,> 0,0,0.0
+prueba_completa,falso_negativo,education,HS-grad,357,39.62
+prueba_completa,falso_negativo,education,Some-college,211,23.42
+prueba_completa,falso_negativo,education,Bachelors,117,12.99
+prueba_completa,falso_negativo,education,Assoc-voc,57,6.33
+prueba_completa,falso_negativo,education,Masters,50,5.55
+prueba_completa,falso_negativo,education,Assoc-acdm,28,3.11
+prueba_completa,falso_negativo,education,10th,19,2.11
+prueba_completa,falso_negativo,education,7th-8th,16,1.78
+prueba_completa,falso_negativo,education,11th,16,1.78
+prueba_completa,falso_negativo,education,Prof-school,7,0.78
+prueba_completa,falso_negativo,education,5th-6th,7,0.78
+prueba_completa,falso_negativo,education,12th,6,0.67
+prueba_completa,falso_negativo,education,Doctorate,5,0.55
+prueba_completa,falso_negativo,education,9th,4,0.44
+prueba_completa,falso_negativo,education,1st-4th,1,0.11
+prueba_completa,falso_negativo,capital_gain,= 0,853,94.67
+prueba_completa,falso_negativo,capital_gain,> 0,48,5.33
+prueba_completa,falso_positivo,education,Bachelors,185,38.7
+prueba_completa,falso_positivo,education,Some-college,78,16.32
+prueba_completa,falso_positivo,education,HS-grad,59,12.34
+prueba_completa,falso_positivo,education,Masters,58,12.13
+prueba_completa,falso_positivo,education,Assoc-acdm,25,5.23
+prueba_completa,falso_positivo,education,Doctorate,23,4.81
+prueba_completa,falso_positivo,education,Assoc-voc,22,4.6
+prueba_completa,falso_positivo,education,Prof-school,19,3.97
+prueba_completa,falso_positivo,education,7th-8th,4,0.84
+prueba_completa,falso_positivo,education,11th,2,0.42
+prueba_completa,falso_positivo,education,10th,2,0.42
+prueba_completa,falso_positivo,education,5th-6th,1,0.21
+prueba_completa,falso_positivo,capital_gain,= 0,436,91.21
+prueba_completa,falso_positivo,capital_gain,> 0,42,8.79

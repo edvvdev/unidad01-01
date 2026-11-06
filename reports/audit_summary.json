@@ -1,0 +1,86 @@
+{
+  "generado_en": "2026-11-05",
+  "datasets": {
+    "adult": {
+      "nombre": "Adult (Census Income)",
+      "doi": "10.24432/C5XW20",
+      "licencia": "CC BY 4.0 (UCI)",
+      "filas": 48842,
+      "columnas": 15,
+      "n_numericas": 6,
+      "n_categoricas": 8,
+      "columnas_numericas": [
+        "age",
+        "fnlwgt",
+        "education_num",
+        "capital_gain",
+        "capital_loss",
+        "hours_per_week"
+      ],
+      "columnas_categoricas": [
+        "workclass",
+        "education",
+        "marital_status",
+        "occupation",
+        "relationship",
+        "race",
+        "sex",
+        "native_country"
+      ],
+      "total_nulos": 6465,
+      "nulos_por_columna": {
+        "workclass": 2799,
+        "occupation": 2809,
+        "native_country": 857
+      },
+      "duplicate_rows": 52,
+      "target": "income",
+      "target_counts": {
+        "<=50K": 37155,
+        ">50K": 11687
+      }
+    },
+    "bank": {
+      "nombre": "Bank Marketing",
+      "doi": "10.24432/C5K306",
+      "licencia": "CC BY 4.0 (UCI)",
+      "filas": 45211,
+      "columnas": 17,
+      "n_numericas": 7,
+      "n_categoricas": 9,
+      "columnas_numericas": [
+        "age",
+        "balance",
+        "day",
+        "duration",
+        "campaign",
+        "pdays",
+        "previous"
+      ],
+      "columnas_categoricas": [
+        "job",
+        "marital",
+        "education",
+        "default",
+        "housing",
+        "loan",
+        "contact",
+        "month",
+        "poutcome"
+      ],
+      "total_nulos": 52124,
+      "nulos_por_columna": {
+        "job": 288,
+        "education": 1857,
+        "contact": 13020,
+        "poutcome": 36959
+      },
+      "duplicate_rows": 0,
+      "target": "y",
+      "target_counts": {
+        "no": 39922,
+        "yes": 5289
+      }
+    }
+  }
+}

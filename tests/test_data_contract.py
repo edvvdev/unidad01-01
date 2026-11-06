@@ -2,9 +2,9 @@
 
 from __future__ import annotations
 
+import json
 from pathlib import Path
 
-import pandas as pd
 import pytest
 
 from inf8239_u01.data import (
@@ -15,7 +15,9 @@ from inf8239_u01.data import (
     validate_url,
 )
 
-DATA_RAW = Path(__file__).resolve().parents[1] / "data" / "raw"
+ROOT = Path(__file__).resolve().parents[1]
+DATA_RAW = ROOT / "data" / "raw"
+REPORTS = ROOT / "reports"
 
 
 # --------------------------------------------------------------------------------------
@@ -46,6 +48,7 @@ def test_every_candidate_declares_the_required_metadata():
         assert spec["url"].startswith("https://")
         assert spec["ficha"].startswith("https://")
         assert "CC BY" in spec["licencia"]
+        assert spec["doi"].startswith("10.")
         assert spec["target"] and spec["target_positive"]
         assert spec["exclude"], f"{name} debe justificar sus exclusiones"
         assert spec["motivo_exclusion"]
@@ -85,11 +88,38 @@ def test_dataset_contract(name):
 
 
 @pytest.mark.parametrize("name", sorted(DATASET_SPECS))
-def test_duplicated_rows_are_identified(name):
+def test_duplicated_rows_match_the_published_audit(name):
+    """El número de duplicados que declara `reports/audit_summary.json` debe ser real."""
+    path = DATA_RAW / f"{name}.csv"
+    if not path.exists():
+        pytest.skip(f"Falta descargar el dataset: download_dataset('{name}')")
+    summary_path = REPORTS / "audit_summary.json"
+    if not summary_path.exists():
+        pytest.skip("Falta reports/audit_summary.json (ejecuta scripts/audit_datasets.py)")
+    summary = json.loads(summary_path.read_text(encoding="utf-8"))
+    assert name in summary["datasets"], f"la auditoría publicada no cubre {name}"
+    declarado = summary["datasets"][name]["duplicate_rows"]
+    frame = load_dataset(name, path)
+    detectado = int(frame.duplicated().sum())
+    assert declarado == detectado, (
+        f"la auditoría declara {declarado} filas duplicadas y el CSV tiene {detectado}"
+    )
+    assert 0 <= declarado <= len(frame)
+
+
+@pytest.mark.parametrize("name", sorted(DATASET_SPECS))
+def test_deduplicated_frame_has_no_repeated_rows(name):
+    """Tras deduplicar no queda ninguna fila repetida y se pierden solo las duplicadas."""
     path = DATA_RAW / f"{name}.csv"
     if not path.exists():
         pytest.skip(f"Falta descargar el dataset: download_dataset('{name}')")
     frame = load_dataset(name, path)
     duplicated = int(frame.duplicated().sum())
-    assert duplicated >= 0  # la auditoría debe informar el valor, no ocultarlo
-    assert isinstance(duplicated, int)
+    limpio = frame.drop_duplicates()
+    assert int(limpio.duplicated().sum()) == 0, "quedan filas repetidas tras deduplicar"
+    assert len(limpio) == len(frame) - duplicated
+    if duplicated:
+        repetidas = frame[frame.duplicated(keep=False)]
+        grupos = repetidas.groupby(list(frame.columns), dropna=False).size()
+        assert (grupos >= 2).all(), "hay filas repetidas que no son idénticas entre sí"
+        assert len(repetidas) - len(grupos) == duplicated

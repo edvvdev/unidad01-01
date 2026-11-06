@@ -1,0 +1,555 @@
+{
+  "semilla": 42,
+  "generado_en": "2026-11-05",
+  "muestra_errores": 20,
+  "falsos_negativos_prueba": 901,
+  "falsos_positivos_prueba": 478,
+  "muestra": {
+    "n_falso_negativo": 12,
+    "n_falso_positivo": 8,
+    "falso_negativo": {
+      "n": 12,
+      "education": {
+        "HS-grad": 6,
+        "Bachelors": 3,
+        "Some-college": 3
+      },
+      "capital_gain_cero": 11,
+      "capital_gain_positivo": 1,
+      "capital_gain_positivo_filas": [
+        {
+          "age": 33,
+          "education": "HS-grad",
+          "capital_gain": 3103
+        }
+      ],
+      "edad_media": 41.5,
+      "edad_mediana": 35.0,
+      "horas_media": 39.833333333333336,
+      "horas_mediana": 40.0
+    },
+    "falso_positivo": {
+      "n": 8,
+      "education": {
+        "Bachelors": 3,
+        "HS-grad": 3,
+        "Masters": 1,
+        "Some-college": 1
+      },
+      "capital_gain_cero": 8,
+      "capital_gain_positivo": 0,
+      "capital_gain_positivo_filas": [],
+      "edad_media": 37.875,
+      "edad_mediana": 34.5,
+      "horas_media": 45.625,
+      "horas_mediana": 42.5
+    }
+  },
+  "prueba_completa": {
+    "n_falso_negativo": 901,
+    "n_falso_positivo": 478,
+    "falso_negativo": {
+      "n": 901,
+      "education": {
+        "HS-grad": 357,
+        "Some-college": 211,
+        "Bachelors": 117,
+        "Assoc-voc": 57,
+        "Masters": 50,
+        "Assoc-acdm": 28,
+        "10th": 19,
+        "7th-8th": 16,
+        "11th": 16,
+        "Prof-school": 7,
+        "5th-6th": 7,
+        "12th": 6,
+        "Doctorate": 5,
+        "9th": 4,
+        "1st-4th": 1
+      },
+      "capital_gain_cero": 853,
+      "capital_gain_positivo": 48,
+      "capital_gain_positivo_filas": [
+        {
+          "age": 57,
+          "education": "7th-8th",
+          "capital_gain": 3103
+        },
+        {
+          "age": 54,
+          "education": "Some-college",
+          "capital_gain": 3103
+        },
+        {
+          "age": 40,
+          "education": "Some-college",
+          "capital_gain": 4787
+        },
+        {
+          "age": 47,
+          "education": "HS-grad",
+          "capital_gain": 3103
+        },
+        {
+          "age": 37,
+          "education": "Bachelors",
+          "capital_gain": 4934
+        },
+        {
+          "age": 33,
+          "education": "HS-grad",
+          "capital_gain": 3103
+        },
+        {
+          "age": 41,
+          "education": "Assoc-voc",
+          "capital_gain": 3103
+        },
+        {
+          "age": 37,
+          "education": "Some-college",
+          "capital_gain": 4934
+        },
+        {
+          "age": 48,
+          "education": "HS-grad",
+          "capital_gain": 3103
+        },
+        {
+          "age": 34,
+          "education": "Some-college",
+          "capital_gain": 3103
+        },
+        {
+          "age": 38,
+          "education": "Some-college",
+          "capital_gain": 3103
+        },
+        {
+          "age": 35,
+          "education": "HS-grad",
+          "capital_gain": 4386
+        },
+        {
+          "age": 43,
+          "education": "HS-grad",
+          "capital_gain": 8614
+        },
+        {
+          "age": 32,
+          "education": "HS-grad",
+          "capital_gain": 3103
+        },
+        {
+          "age": 36,
+          "education": "11th",
+          "capital_gain": 5178
+        },
+        {
+          "age": 49,
+          "education": "Masters",
+          "capital_gain": 4787
+        },
+        {
+          "age": 51,
+          "education": "Bachelors",
+          "capital_gain": 5178
+        },
+        {
+          "age": 32,
+          "education": "Assoc-voc",
+          "capital_gain": 7298
+        },
+        {
+          "age": 27,
+          "education": "HS-grad",
+          "capital_gain": 5178
+        },
+        {
+          "age": 27,
+          "education": "Some-college",
+          "capital_gain": 3103
+        },
+        {
+          "age": 71,
+          "education": "7th-8th",
+          "capital_gain": 6514
+        },
+        {
+          "age": 29,
+          "education": "Some-college",
+          "capital_gain": 3103
+        },
+        {
+          "age": 37,
+          "education": "Masters",
+          "capital_gain": 4787
+        },
+        {
+          "age": 45,
+          "education": "Bachelors",
+          "capital_gain": 4386
+        },
+        {
+          "age": 36,
+          "education": "HS-grad",
+          "capital_gain": 4386
+        },
+        {
+          "age": 60,
+          "education": "Some-college",
+          "capital_gain": 3103
+        },
+        {
+          "age": 61,
+          "education": "HS-grad",
+          "capital_gain": 4386
+        },
+        {
+          "age": 56,
+          "education": "HS-grad",
+          "capital_gain": 3103
+        },
+        {
+          "age": 33,
+          "education": "Assoc-voc",
+          "capital_gain": 10520
+        },
+        {
+          "age": 31,
+          "education": "Some-college",
+          "capital_gain": 5178
+        },
+        {
+          "age": 30,
+          "education": "Masters",
+          "capital_gain": 4386
+        },
+        {
+          "age": 44,
+          "education": "11th",
+          "capital_gain": 5178
+        },
+        {
+          "age": 46,
+          "education": "Some-college",
+          "capital_gain": 3103
+        },
+        {
+          "age": 51,
+          "education": "HS-grad",
+          "capital_gain": 4386
+        },
+        {
+          "age": 90,
+          "education": "Assoc-acdm",
+          "capital_gain": 6097
+        },
+        {
+          "age": 45,
+          "education": "Bachelors",
+          "capital_gain": 4687
+        },
+        {
+          "age": 30,
+          "education": "Assoc-acdm",
+          "capital_gain": 4787
+        },
+        {
+          "age": 42,
+          "education": "7th-8th",
+          "capital_gain": 4386
+        },
+        {
+          "age": 43,
+          "education": "Masters",
+          "capital_gain": 4934
+        },
+        {
+          "age": 39,
+          "education": "HS-grad",
+          "capital_gain": 5178
+        },
+        {
+          "age": 41,
+          "education": "Some-college",
+          "capital_gain": 3103
+        },
+        {
+          "age": 32,
+          "education": "HS-grad",
+          "capital_gain": 5178
+        },
+        {
+          "age": 36,
+          "education": "Bachelors",
+          "capital_gain": 4386
+        },
+        {
+          "age": 55,
+          "education": "HS-grad",
+          "capital_gain": 4386
+        },
+        {
+          "age": 53,
+          "education": "7th-8th",
+          "capital_gain": 4386
+        },
+        {
+          "age": 37,
+          "education": "HS-grad",
+          "capital_gain": 3103
+        },
+        {
+          "age": 33,
+          "education": "HS-grad",
+          "capital_gain": 4386
+        },
+        {
+          "age": 50,
+          "education": "HS-grad",
+          "capital_gain": 5178
+        }
+      ],
+      "edad_media": 43.27635960044395,
+      "edad_mediana": 42.0,
+      "horas_media": 43.879023307436185,
+      "horas_mediana": 40.0
+    },
+    "falso_positivo": {
+      "n": 478,
+      "education": {
+        "Bachelors": 185,
+        "Some-college": 78,
+        "HS-grad": 59,
+        "Masters": 58,
+        "Assoc-acdm": 25,
+        "Doctorate": 23,
+        "Assoc-voc": 22,
+        "Prof-school": 19,
+        "7th-8th": 4,
+        "11th": 2,
+        "10th": 2,
+        "5th-6th": 1
+      },
+      "capital_gain_cero": 436,
+      "capital_gain_positivo": 42,
+      "capital_gain_positivo_filas": [
+        {
+          "age": 73,
+          "education": "Bachelors",
+          "capital_gain": 1173
+        },
+        {
+          "age": 38,
+          "education": "Assoc-voc",
+          "capital_gain": 3908
+        },
+        {
+          "age": 35,
+          "education": "Some-college",
+          "capital_gain": 5013
+        },
+        {
+          "age": 60,
+          "education": "Some-college",
+          "capital_gain": 6849
+        },
+        {
+          "age": 63,
+          "education": "Masters",
+          "capital_gain": 41310
+        },
+        {
+          "age": 24,
+          "education": "Bachelors",
+          "capital_gain": 3908
+        },
+        {
+          "age": 60,
+          "education": "Prof-school",
+          "capital_gain": 3781
+        },
+        {
+          "age": 59,
+          "education": "Bachelors",
+          "capital_gain": 5013
+        },
+        {
+          "age": 36,
+          "education": "Assoc-voc",
+          "capital_gain": 3908
+        },
+        {
+          "age": 47,
+          "education": "Some-college",
+          "capital_gain": 3908
+        },
+        {
+          "age": 52,
+          "education": "Masters",
+          "capital_gain": 5013
+        },
+        {
+          "age": 39,
+          "education": "Bachelors",
+          "capital_gain": 3137
+        },
+        {
+          "age": 62,
+          "education": "Bachelors",
+          "capital_gain": 4064
+        },
+        {
+          "age": 45,
+          "education": "Masters",
+          "capital_gain": 4386
+        },
+        {
+          "age": 39,
+          "education": "Some-college",
+          "capital_gain": 2829
+        },
+        {
+          "age": 26,
+          "education": "Masters",
+          "capital_gain": 6849
+        },
+        {
+          "age": 62,
+          "education": "Bachelors",
+          "capital_gain": 2829
+        },
+        {
+          "age": 59,
+          "education": "Bachelors",
+          "capital_gain": 2885
+        },
+        {
+          "age": 55,
+          "education": "HS-grad",
+          "capital_gain": 34095
+        },
+        {
+          "age": 35,
+          "education": "Some-college",
+          "capital_gain": 5013
+        },
+        {
+          "age": 39,
+          "education": "Masters",
+          "capital_gain": 5013
+        },
+        {
+          "age": 46,
+          "education": "Assoc-acdm",
+          "capital_gain": 6497
+        },
+        {
+          "age": 32,
+          "education": "Some-college",
+          "capital_gain": 3464
+        },
+        {
+          "age": 56,
+          "education": "Bachelors",
+          "capital_gain": 4508
+        },
+        {
+          "age": 43,
+          "education": "Masters",
+          "capital_gain": 6497
+        },
+        {
+          "age": 38,
+          "education": "Bachelors",
+          "capital_gain": 4064
+        },
+        {
+          "age": 50,
+          "education": "Masters",
+          "capital_gain": 4650
+        },
+        {
+          "age": 62,
+          "education": "HS-grad",
+          "capital_gain": 10566
+        },
+        {
+          "age": 65,
+          "education": "Assoc-voc",
+          "capital_gain": 6767
+        },
+        {
+          "age": 51,
+          "education": "7th-8th",
+          "capital_gain": 3908
+        },
+        {
+          "age": 62,
+          "education": "Assoc-voc",
+          "capital_gain": 3411
+        },
+        {
+          "age": 63,
+          "education": "Masters",
+          "capital_gain": 5013
+        },
+        {
+          "age": 70,
+          "education": "Some-college",
+          "capital_gain": 10566
+        },
+        {
+          "age": 43,
+          "education": "HS-grad",
+          "capital_gain": 3908
+        },
+        {
+          "age": 50,
+          "education": "Assoc-acdm",
+          "capital_gain": 3942
+        },
+        {
+          "age": 55,
+          "education": "Some-college",
+          "capital_gain": 5013
+        },
+        {
+          "age": 50,
+          "education": "Doctorate",
+          "capital_gain": 3781
+        },
+        {
+          "age": 66,
+          "education": "Bachelors",
+          "capital_gain": 6767
+        },
+        {
+          "age": 34,
+          "education": "Bachelors",
+          "capital_gain": 4508
+        },
+        {
+          "age": 31,
+          "education": "Bachelors",
+          "capital_gain": 4064
+        },
+        {
+          "age": 56,
+          "education": "Some-college",
+          "capital_gain": 5013
+        },
+        {
+          "age": 62,
+          "education": "Assoc-voc",
+          "capital_gain": 3137
+        }
+      ],
+      "edad_media": 43.43096234309623,
+      "edad_mediana": 42.0,
+      "horas_media": 45.78242677824268,
+      "horas_mediana": 40.0
+    }
+  }
+}
